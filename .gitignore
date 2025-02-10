@@ -1,4 +1,5 @@
 # FILES #
 ###################
-*.toml
 secrets.toml
+.venv
+__pychache__
