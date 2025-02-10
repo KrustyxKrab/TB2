@@ -1,7 +1,7 @@
 import streamlit as st
 
 
-def create_card(title, description, id, tags, image=None, additional_info=None, buttons=None):
+def create_card(title, description, id, tags, image=None, additional_info=None):
     """
     Creates a Streamlit card with an optional image, tags, and buttons.
     Includes a 'See More' expander for additional details.
@@ -25,13 +25,11 @@ def create_card(title, description, id, tags, image=None, additional_info=None, 
 
         with col2:
             # Render buttons if available
-            if buttons:
-                for button_config in buttons:
-                    label = button_config.get("label", "")
-                    button_key = f"{id}_{label}"
+            label = "❤"
+            button_key = f"{id}_{label}"
 
-                    if st.button(label, key = button_key, use_container_width=True):
-                        st.write(f"Button '{label}' clicked!")  # Debugging output
+            if st.button(label, key = button_key, use_container_width=True):
+                st.write(f"Liked")  # Debugging output
 
         # "See More" Expander instead of Popup
         with st.expander(f"Read More"):

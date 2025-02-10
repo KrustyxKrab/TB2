@@ -43,6 +43,7 @@ if "user_data" in st.session_state and st.session_state["user_data"] is not None
 # === LOGIN SEITE ===
 def login():
     if st.session_state["logged_in"] is True:
+        st.sidebar.write("When this happens, please reload!")
         return None  # if the user is already logged in, just leave
 
     placeholder = st.empty()
@@ -84,7 +85,6 @@ def login():
 # the logic which handles the current page across the multiple pages
 # if current_page == login, the login in page is being displayed
 # this is a workaround for the button state handler
+st.sidebar.write(f"Logged In is: {st.session_state["logged_in"]}")
 
-if st.session_state["current_page"] == "login":
-    login()
-
+login()

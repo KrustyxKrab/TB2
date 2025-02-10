@@ -10,14 +10,18 @@ current_page = 'Explore'
 if 'current_page' not in st.session_state:
     st.session_state['current_page'] = current_page
 
-
 if 'current_page' in st.session_state and st.session_state['current_page'] is None:
     st.session_state['current_page'] = 'Explore'
+
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+    st.sidebar.write(f"Logged In is: {st.session_state ["logged_in"]}")
 
 init_sidebar()
 
 
-if current_page == "Explore":
+if current_page == "Explore" and st.session_state["logged_in"] is True:
+    st.sidebar.write(f"Logged In is: {st.session_state ["logged_in"]}")
     hero_section(
         "Let's Explore",
         """🌍 Discover Unique Places Around You!  
@@ -25,8 +29,20 @@ if current_page == "Explore":
     Find your next favorite place, save locations you love, and contribute by adding your own discoveries.  
     ✨ **Start exploring now and uncover the best spots near you!**""",
         "https://images.unsplash.com/photo-1716146410134-5e152c41827a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        buttonOne = [{"label": "Create Location", "type": "function", "function": create_location}],
-        buttonTwo = [{"label": "Get More Information", 'link': 'pages/Info.py', "type": "switch_page"}],)
+        buttonOne = [{"label": "Create Location", "use": "switch_page", "link": "pages/Login.py", "type": "primary"}],
+        buttonTwo = [{"label": "Get More Information", 'link': 'pages/Info.py', "use": "switch_page"}],)
+
+elif st.session_state['logged_in'] is False:
+    st.sidebar.write(f"Logged In is: {st.session_state["logged_in"]}")
+    hero_section("Let's Explore", """🌍 Discover Unique Places Around You!  
+    Here, you can explore hidden gems, cozy cafes, and exciting spots recommended by others.  
+    Find your next favorite place, save locations you love, and contribute by adding your own discoveries.  
+    ✨ **Start exploring now and uncover the best spots near you!**""",
+        "https://images.unsplash.com/photo-1716146410134-5e152c41827a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        buttonOne = [{"label": "Log-In to Create Location", "use": "switch_page", "link": "pages/Login.py", "type": "primary"}],)
+else:
+    print("Error")
+    st.sidebar.write(st.error("Something went wrong! Please reload or try again!"))
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -38,28 +54,28 @@ with col1:
                 tags = ["Cafe", "Food & Drink"],
                 image = "https://source.unsplash.com/300x200/?coffee",
                 additional_info = {"Location": "Berlin", "Rating": "4.5", "Reviews": "200+"},
-                buttons = [{"label": "❤"}])
+                )
 
 with col2:
     create_card(title = "Best Coffee Shop", description = [{"A cozy place to enjoy your morning coffee."}, {"In the Best Coffee Shop in Lüneburg, you can drink and enjoy tasty coffee and snacks"}],
                 id = "coffee_02", tags = ["Cafe", "Food & Drink"],
                 image = "https://source.unsplash.com/300x200/?coffee",
                 additional_info = {"Location": "Berlin", "Rating": "4.5", "Reviews": "200+"},
-                buttons = [{"label": "❤"}])
+                )
 
 with col3:
     create_card(title = "Best Coffee Shop", description = [{"A cozy place to enjoy your morning coffee."}, {"In the Best Coffee Shop in Lüneburg, you can drink and enjoy tasty coffee and snacks"}],
                 id = "coffee_03", tags = ["Cafe", "Food & Drink"],
                 image = "https://source.unsplash.com/300x200/?coffee",
                 additional_info = {"Location": "Berlin", "Rating": "4.5", "Reviews": "200+"},
-                buttons = [{"label": "❤"}])
+                )
 
 with col4:
     create_card(title = "Best Coffee Shop", description = [{"A cozy place to enjoy your morning coffee."}, {"In the Best Coffee Shop in Lüneburg, you can drink and enjoy tasty coffee and snacks"}],
                 id = "coffee_04", tags = ["Cafe", "Food & Drink"],
                 image = "https://source.unsplash.com/300x200/?coffee",
                 additional_info = {"Location": "Berlin", "Rating": "4.5", "Reviews": "200+"},
-                buttons = [{"label": "❤"}])
+                )
 
 
 st.markdown("""
