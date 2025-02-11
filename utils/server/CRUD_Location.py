@@ -1,8 +1,4 @@
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 from utils.server.CRUD_Users import connect_to_mongo
-from utils.tools.hash import password_hash
-from utils.server.SessionState import save_session
 import streamlit as st
 
 
@@ -22,13 +18,61 @@ import streamlit as st
 
 """
 
-def create_location(title, town, desc, tags, image, author, rating, comments):
+def create_location(title, town, desc, tags, image=None, author=None, id=None):
+    try:
+        if "client" not in st.session_state:
+            client = connect_to_mongo()
+        else:
+            # if the MongoDB connection is already built
+            client = st.session_state['client']
 
-    if "client" not in st.session_state:
-        client = connect_to_mongo()
-    else:
-        # if the MongoDB connection is already built
-        client = st.session_state ['client']
+        db = client['LocatoApp']
+        collection = db['locations']
 
-    db = client ['LocatoApp']
-    collection = db ['Locations']
+        location_document = \
+            {"title": title,
+             "town": town,
+             "desc": desc,
+             "tags": tags,
+             "id": id,
+             "image": image,
+             "author": author,
+             "rating": 0,
+             "comments": None,
+             }
+
+        if collection.insert_one(location_document):
+            # stores the document in the session state
+            st.write(f"Location Data = {location_document}")
+            print(f"Location inserted by {author}")
+
+
+        else:
+            st.error("Location has not been created!")
+
+    except Exception as e:
+        print(f"Could not connect to MongoDB - Error: {e}")
+
+
+def find_location(key, value):
+    try:
+
+        client = st.session_state["client"]
+
+        db = client["LocatoApp"]
+        collection = db["location"]
+
+        # Fetch user from database
+        location = collection.find_one({key: value})
+
+        # Update session state with fresh data
+        if location:
+            print(f"Location found in DB with {key}: {value}")
+            return location
+        else:
+            print(f"No location found with {key}: {value}")
+            return None
+
+    except Exception as e:
+        print(f"Error fetching user from DB: {e}")
+        return None

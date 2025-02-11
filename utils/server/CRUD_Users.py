@@ -65,6 +65,7 @@ def create_user(name, username, email, password, id):  #create
     except Exception as e:
         print(f"Could not connect to MongoDB - Error: {e}")
 
+
 # ==== FIND USER AND UPDATE STATE ====
 def find_user(key, value, update=False):
     """

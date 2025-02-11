@@ -63,7 +63,8 @@ def login():
                         st.success("Login successful!")
 
                         #usage of session_state -> safe the user progress for optimal UX
-
+                        # not safe the password in st.session_state
+                        user_data.pop('password', None)
                         st.session_state["user_data"] = user_data
                         st.session_state["logged_in"] = True
 

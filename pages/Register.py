@@ -56,7 +56,7 @@ def register():
                 st.error(f"This username is already used - Do you want to Log In?")
                 st.page_link("pages/Login.py", label="Click here to Log In")
             else:
-                unique_id = generate_unique_id()
+                unique_id = generate_unique_id(type = "user")
                 create_user(name, username, email, password, unique_id)
                 st.session_state["registered"] = True
                 placeholder.empty()

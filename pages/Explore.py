@@ -29,7 +29,7 @@ if current_page == "Explore" and st.session_state["logged_in"] is True:
     Find your next favorite place, save locations you love, and contribute by adding your own discoveries.  
     ✨ **Start exploring now and uncover the best spots near you!**""",
         "https://images.unsplash.com/photo-1716146410134-5e152c41827a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        buttonOne = [{"label": "Create Location", "use": "switch_page", "link": "pages/Login.py", "type": "primary"}],
+        buttonOne = [{"label": "Create Location", "use": "switch_page", "link": "pages/CreateLocation.py", "type": "primary"}],
         buttonTwo = [{"label": "Get More Information", 'link': 'pages/Info.py', "use": "switch_page"}],)
 
 elif st.session_state['logged_in'] is False:

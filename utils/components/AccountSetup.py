@@ -42,7 +42,7 @@ def setup():
     placeholder = st.empty()
 
     with (placeholder.form("Customize")):
-        #subheader
+        # subheader
         st.subheader("Customize Your Account")
 
         user_data = st.session_state['user_data']
@@ -88,3 +88,4 @@ def setup():
             st.session_state ["current_page"] = "account_management"
             # rerun reloads the page and sets it to current_page
             st.rerun()
+
