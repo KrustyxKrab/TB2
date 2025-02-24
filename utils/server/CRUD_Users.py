@@ -4,7 +4,7 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from utils.tools.hash import password_hash
 from utils.server.SessionState import save_session
-from utils.server.alert_admin import alert_admin
+#from utils.server.alert_admin import alert_admin
 import time
 
 # ==== GENERAL CONNECTION FUNCTION ====
