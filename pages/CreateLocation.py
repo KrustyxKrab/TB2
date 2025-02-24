@@ -57,6 +57,52 @@ with create_placeholder:
         return [img["urls"]["regular"] for img in response.json().get("results", [])]
 
 
+    # OpenStreetMap Nominatim API URL
+    NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
+
+    # Streamlit UI
+    st.title("📍 Address Autocomplete with OpenStreetMap (Nominatim)")
+
+    st.write("Start typing an address and select from the suggestions:")
+
+
+    # Function to fetch autocomplete suggestions from OpenStreetMap (Nominatim)
+    def get_address_suggestions(query):
+        if not query:
+            return []
+
+        params = {"q": query, "format": "json", "addressdetails": 1, "limit": 5}
+
+        try:
+            response = requests.get(NOMINATIM_URL, params = params)
+            response.raise_for_status()  # Raise an error for bad responses (4xx and 5xx)
+            results = response.json()
+            return [result ["display_name"] for result in results]
+        except Exception as e:
+            st.error(f"Error fetching address suggestions: {e}")
+            return []
+
+
+    # Address Input with Autocomplete
+    query = st.text_input("Enter an address", "")
+
+    # Fetch and display suggestions
+    if query:
+        suggestions = get_address_suggestions(query)
+
+        if suggestions:
+            selected_address = st.selectbox("Select an address:", suggestions)
+            st.success(f"✅ Selected Address: {selected_address}")
+        else:
+            st.warning("No suggestions found. Try another query.")
+
+    # Debugging: Show raw API response
+    with st.expander("Debugging Info"):
+        st.write("Nominatim API Response:")
+        st.json(suggestions if query else {})
+
+    st.write("🚀 Powered by OpenStreetMap (Nominatim API)")
+
     if link:
         images = get_image(link, api_key, results = 1)
         if images:

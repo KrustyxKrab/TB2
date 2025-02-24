@@ -1,29 +1,64 @@
+import streamlit as st
+
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from utils.tools.hash import password_hash
 from utils.server.SessionState import save_session
-import streamlit as st
+from utils.server.alert_admin import alert_admin
+import time
 
 # ==== GENERAL CONNECTION FUNCTION ====
-def connect_to_mongo():
-    # import the name & password from .streamlit secrets
-    user = st.secrets['username']
-    db_password = st.secrets['password']
 
+
+def connect_to_mongo(retries=5, delay=2):
+    """
+    Connect to MongoDB with automatic retries and a fallback mechanism.
+    """
+    # Import credentials from Streamlit secrets
+    user = st.secrets ['username']
+    db_password = st.secrets ['password']
+
+    # MongoDB connection URI
     uri = f"mongodb+srv://{user}:{db_password}@locato.8njtn.mongodb.net/?retryWrites=true&w=majority&appName=Locato"
 
-    # Create a new client and connect to the server
-    client = MongoClient(uri, server_api=ServerApi('1'))
+    # Attempt to connect with retries
+    for attempt in range(retries):
+        try:
+            client = MongoClient(uri, server_api = ServerApi('1'))
+            client.admin.command('ping')  # Check if MongoDB is alive
 
-    # Send a ping to confirm a successful connection
+            # Save connection to session state
+            save_session("client", client)
+
+            st.success("✅ Successfully connected to MongoDB!")
+            return client
+        except Exception as e:
+            st.warning(f"⏳ Retry {attempt + 1}/{retries}: MongoDB not responding... {e}")
+            time.sleep(delay * (2 ** attempt))  # Exponential backoff
+
+    # ❌ If all retries fail, use fallback
+    st.error("❌ MongoDB is down. Switching to fallback solution...")
+
+    #alert_admin()
+
+    return fallback_solution()
+
+
+def fallback_solution():
+    """
+    Fallback mechanism:
+    1. Try reading from a read-only secondary MongoDB node.
+    """
     try:
-        client.admin.command('ping')
-        save_session("client", client)
+        # Attempt to connect to a secondary node (read-only)
+        secondary_uri = f"mongodb+srv://{st.secrets ['backup_user']}:{st.secrets ['backup_password']}@locato.8njtn.mongodb.net/?retryWrites=true&w=majority&appName=Locato"
+        secondary_client = MongoClient(secondary_uri, server_api = ServerApi('1'))
+        secondary_client.admin.command('ping')  # Test connection
+        st.warning("⚠️ Connected to a read-only MongoDB replica.")
+        return secondary_client
     except Exception as e:
-        print(e)
-        print('Error')
+        st.error("⚠️ Fallback Connection to MongoDB also unavailable. Contacted locato admin")
 
-    return client
 
 # ==== CREATE USER ====
 def create_user(name, username, email, password, id):  #create

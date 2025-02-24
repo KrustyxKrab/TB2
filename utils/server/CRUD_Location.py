@@ -92,13 +92,13 @@ def read_location(filter):
         db = client["LocatoApp"]
         collection = db["locations"]
 
-        if filter is "author":
+        if filter == "author":
             # gets user_data tags
             if st.session_state['user_data']:
                 username = st.session_state['user_data']['username']
                 query = {"author": username}
 
-        elif filter is "user":
+        elif filter == "user":
             # gets user_data tags
             if st.session_state ['user_data']:
                 user_tags = st.session_state ['user_data'] ['tags']
@@ -134,8 +134,11 @@ def read_location(filter):
                 query = None
                 return
 
-        else:
+        elif filter == "all":
             query = {}  # Show all locations if no user tags exist
+
+        else:
+            st.error("Something went wrong... please reload")
 
         if query is not None:
             # fetches the data from mongo
