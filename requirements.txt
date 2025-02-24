@@ -2,7 +2,6 @@ streamlit
 streamlit-extras
 pymongo
 bcrypt
-time
 
 #requests
 #string
