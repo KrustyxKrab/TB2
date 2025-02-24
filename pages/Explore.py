@@ -30,7 +30,6 @@ if current_page == "Explore" and st.session_state["logged_in"] is True:
         buttonTwo = [{"label": "Get More Information", 'link': 'pages/Info.py', "use": "switch_page"}],)
 
 elif st.session_state['logged_in'] is False:
-    st.sidebar.write(f"Logged In is: {st.session_state["logged_in"]}")
     hero_section("Let's Explore", """🌍 Discover Unique Places Around You!  
     Here, you can explore hidden gems, cozy cafes, and exciting spots recommended by others.  
     Find your next favorite place, save locations you love, and contribute by adding your own discoveries.  
