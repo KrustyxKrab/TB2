@@ -81,11 +81,5 @@ def login():
 
     return None
 
-# === SEITEN-STEUERUNG ===
-
-# the logic which handles the current page across the multiple pages
-# if current_page == login, the login in page is being displayed
-# this is a workaround for the button state handler
-st.sidebar.write(f"Logged In is: {st.session_state["logged_in"]}")
 
 login()
