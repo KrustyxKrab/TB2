@@ -4,6 +4,7 @@ from utils.components.LocatoCard import create_card
 from utils.components.Sidebar import init_sidebar
 from utils.components.HeroSection import hero_section
 from utils.components.CreateLocation import create_location
+from utils.server.CRUD_Location import read_location
 
 current_page = 'Explore'
 
@@ -44,38 +45,9 @@ else:
     print("Error")
     st.sidebar.write(st.error("Something went wrong! Please reload or try again!"))
 
-col1, col2, col3, col4 = st.columns(4)
+read_location(all)
 
-with col1:
-    # Example Usage
-    create_card(title = "Best Coffee Shop",
-                description = [{"A cozy place to enjoy your morning coffee."}, {"In the Best Coffee Shop in Lüneburg, you can drink and enjoy tasty coffee and snacks"}],
-                id = "coffee_01",
-                tags = ["Cafe", "Food & Drink"],
-                image = "https://source.unsplash.com/300x200/?coffee",
-                additional_info = {"Location": "Berlin", "Rating": "4.5", "Reviews": "200+"},
-                )
 
-with col2:
-    create_card(title = "Best Coffee Shop", description = [{"A cozy place to enjoy your morning coffee."}, {"In the Best Coffee Shop in Lüneburg, you can drink and enjoy tasty coffee and snacks"}],
-                id = "coffee_02", tags = ["Cafe", "Food & Drink"],
-                image = "https://source.unsplash.com/300x200/?coffee",
-                additional_info = {"Location": "Berlin", "Rating": "4.5", "Reviews": "200+"},
-                )
-
-with col3:
-    create_card(title = "Best Coffee Shop", description = [{"A cozy place to enjoy your morning coffee."}, {"In the Best Coffee Shop in Lüneburg, you can drink and enjoy tasty coffee and snacks"}],
-                id = "coffee_03", tags = ["Cafe", "Food & Drink"],
-                image = "https://source.unsplash.com/300x200/?coffee",
-                additional_info = {"Location": "Berlin", "Rating": "4.5", "Reviews": "200+"},
-                )
-
-with col4:
-    create_card(title = "Best Coffee Shop", description = [{"A cozy place to enjoy your morning coffee."}, {"In the Best Coffee Shop in Lüneburg, you can drink and enjoy tasty coffee and snacks"}],
-                id = "coffee_04", tags = ["Cafe", "Food & Drink"],
-                image = "https://source.unsplash.com/300x200/?coffee",
-                additional_info = {"Location": "Berlin", "Rating": "4.5", "Reviews": "200+"},
-                )
 
 
 st.markdown("""

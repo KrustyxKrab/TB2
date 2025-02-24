@@ -20,7 +20,7 @@ pages = {
         #st.Page("manage_account.py", title="Manage your account"),
     ],
 
-    "Your Account": [
+    "Locato Account": [
         st.Page("pages/Login.py", title="Log-In", icon="👥"),
         st.Page("pages/Register.py", title="Create Account", icon="➕"),
     ],
@@ -38,5 +38,24 @@ after_login_pages = {
 
     "Your Account": [
         st.Page("pages/UserLibrary.py", title="Your Account", icon="👤"),
+        st.Page("pages/YourLocations.py", title="Your Locations", icon="💻"),
     ],
+}
+
+after_login_pages_ADMIN = {
+    "Navigation": [
+        st.Page('pages/main.py', title="Home", default = True, icon="🏡"),
+        st.Page("pages/Explore.py", title="Explore", icon="🧭"),
+        st.Page("pages/CreateLocation.py", title="Create Location", icon="📍"),
+        st.Page("pages/Info.py", title="Information", icon="ℹ️"),
+    ],
+
+    "Your Account": [
+        st.Page("pages/UserLibrary.py", title="Your Account", icon="👤"),
+        st.Page("pages/YourLocations.py", title="Your Locations", icon="💻"),
+    ],
+
+    "Project Information": [
+        st.Page("pages/documentation.py", title="Documentation", icon="📃"),
+    ]
 }

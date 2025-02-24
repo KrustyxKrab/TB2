@@ -14,7 +14,7 @@ def create_card(title, description, id, tags, image=None, additional_info=None):
 
         st.markdown(f"""
         ##### {title}  
-        *{next(iter(description[0]))}*  
+        *{description[0]}*  
         **Tags:**  :blue-background[{tag_str}]
         """, unsafe_allow_html = True)
 
@@ -33,7 +33,7 @@ def create_card(title, description, id, tags, image=None, additional_info=None):
 
         # "See More" Expander instead of Popup
         with st.expander(f"Read More"):
-            st.markdown(f"*{next(iter(description[1]))}*")
+            st.markdown(f"*{description[1]}*")
             if additional_info:
                 st.write("---")
                 for key, value in additional_info.items():
