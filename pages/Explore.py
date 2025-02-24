@@ -1,6 +1,5 @@
 import streamlit as st
 
-from utils.components.LocatoCard import create_card
 from utils.components.Sidebar import init_sidebar
 from utils.components.HeroSection import hero_section
 from utils.server.CRUD_Location import read_location
@@ -15,13 +14,11 @@ if 'current_page' in st.session_state and st.session_state['current_page'] is No
 
 if 'logged_in' not in st.session_state:
     st.session_state['logged_in'] = False
-    st.sidebar.write(f"Logged In is: {st.session_state ["logged_in"]}")
 
 init_sidebar()
 
 
 if current_page == "Explore" and st.session_state["logged_in"] is True:
-    st.sidebar.write(f"Logged In is: {st.session_state ["logged_in"]}")
     hero_section(
         "Let's Explore",
         """🌍 Discover Unique Places Around You!  
@@ -100,5 +97,5 @@ st.markdown("""
 
 
 if st.session_state["current_page"] == "CreateLocation":
-    create_location()
+    st.switch_page("pages/CreateLocation.py")
     st.rerun()
