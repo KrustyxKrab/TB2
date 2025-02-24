@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import time
 from src.poi_list import poi_tags
 from utils.server.CRUD_Location import create_location
 from utils.tools.generate_id import generate_unique_id
@@ -109,6 +110,9 @@ with create_placeholder:
 
                 with after_creation:
                     st.success("Location successfully created")
+
+                time.sleep(2)
+                st.switch_page("pages/Explore.py")
 
             else:
                 st.error("Please fill out the mandatory inputs or cancel creation.")
