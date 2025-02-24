@@ -3,7 +3,6 @@ import streamlit as st
 from utils.components.LocatoCard import create_card
 from utils.components.Sidebar import init_sidebar
 from utils.components.HeroSection import hero_section
-from utils.components.CreateLocation import create_location
 from utils.server.CRUD_Location import read_location
 
 current_page = 'Explore'
@@ -45,9 +44,12 @@ else:
     print("Error")
     st.sidebar.write(st.error("Something went wrong! Please reload or try again!"))
 
-read_location(all)
+if "user_data" in st.session_state and st.session_state["user_data"] is not None:
+    st.title("Locations for You")
+    read_location("user")
 
-
+st.title("All Locations")
+read_location("all")
 
 
 st.markdown("""

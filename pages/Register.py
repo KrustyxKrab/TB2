@@ -59,7 +59,8 @@ def register():
                 unique_id = generate_unique_id(type = "user")
                 create_user(name, username, email, password, unique_id)
                 st.session_state["registered"] = True
-                placeholder.empty()
+                st.session_state["logged_in"] = True
+                st.rerun()
                 return username
 
     return None

@@ -4,7 +4,7 @@ import time
 from streamlit_extras.switch_page_button import switch_page
 from AppConfigs.AppConfig import pages
 
-def hero_section(title, description, image=None, imageseq=None, buttonOne=None, buttonTwo=None):
+def hero_section(title, description, image=None, buttonOne=None, buttonTwo=None):
     col1, col2 = st.columns(2)
     with col1:
         if title:

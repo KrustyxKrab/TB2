@@ -98,10 +98,10 @@ def read_location(filter):
                 username = st.session_state['user_data']['username']
                 query = {"author": username}
 
-        else:
+        elif filter is "user":
             # gets user_data tags
-            if st.session_state['user_data']:
-                user_tags = st.session_state['user_data']['tags']
+            if st.session_state ['user_data']:
+                user_tags = st.session_state ['user_data'] ['tags']
 
                 # if user_tags is only one number and not a list
                 if isinstance(user_tags, int):
@@ -116,9 +116,30 @@ def read_location(filter):
             else:
                 query = {"tags": {"$in": user_tags}}
 
+        elif filter == "id":
+            likes = []  # Default empty list
+            # Check if user_data exists and has 'Likes'
+            if 'user_data' in st.session_state and st.session_state['user_data']:
+                user_data = st.session_state['user_data']
+                if 'Likes' in user_data:
+                    likes = user_data['Likes']
 
-        # fetches the data from mongo
-        locations = list(collection.find(query))
+                    # Ensure likes is a list
+                    if isinstance(likes, int):
+                        likes = [likes]
+            # Only set query if likes is not empty
+            if likes:
+                query = {"id": {"$in": likes}}
+            else:
+                query = None
+                return
+
+        else:
+            query = {}  # Show all locations if no user tags exist
+
+        if query is not None:
+            # fetches the data from mongo
+            locations = list(collection.find(query))
 
         columns = st.columns(4)
         card_index = card_index_generator()
@@ -137,10 +158,10 @@ def read_location(filter):
                 create_card(
                     title=location.get("title", "Unknown Title"),
                     description=location.get("desc", ["No description available"]),
-                    id=location.get("_id", "Unknown ID"),
+                    id=location.get("id", "Unknown ID"),
                     tags=[poi_tags.get(tag, f"Tag {tag}") for tag in tags],
                     image=location.get("image", None),
-                    additional_info={"Town": location.get("town", "Unknown Town")}
+                    additional_info={"Town": location.get("town", "Unknown Town"), "Author": location.get("author", "Unknown Author")}
                 )
 
     except Exception as e:

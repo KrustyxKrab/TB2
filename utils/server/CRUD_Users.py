@@ -47,7 +47,7 @@ def create_user(name, username, email, password, id):  #create
             "password": hashed_password,
             "id": id,
             "admin": False,
-            "alg_str": 'SC_0000_SI_0000',
+            "likes": [],
             "towns": [],
             "tags": [],
         }

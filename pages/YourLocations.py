@@ -6,6 +6,10 @@ st.write("These are the Locations, you have created.")
 
 read_location("author")
 
+st.title("Your Liked Locations")
+read_location("id")
+if read_location("id") == None:
+    st.write("You have not Liked any Location yet")
 
 st.markdown("""
     <style>
