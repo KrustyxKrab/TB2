@@ -45,21 +45,22 @@ def create_card(title, description, id, tags, image=None, address=None, addition
 
             else:
                 # Check if user data exists in session state
-                if ("user_data" in st.session_state and
-                        st.session_state ["user_data"]["username"]  # Ensures username is not None or missing
+                if ("user_data" in st.session_state and isinstance(st.session_state ["user_data"],dict) and  # makes sure, user_data is a dictonary for correct usage
+                        st.session_state ["user_data"].get("username")  # debugged with chatgpt - error source eliminated
                 ):
-                    #get username and author
-                    username = st.session_state ["user_data"] ["username"]
-                    author = additional_info.get("Author")
-
-                    print(author, username)
-
-                    DisableBool = username == author if username and author else False
-
+                    username = st.session_state["user_data"]["username"]
                 else:
-                    DisableBool = True  # Disable the button when not logged in
+                    username = None  # Ensure username is always defined
 
-                print("before button creation")
+                # if author in additional_info
+                author = additional_info.get("Author") if additional_info else None
+
+                # handle username & author
+                if username and author:
+                    DisableBool = username == author  # disable if the user is the author
+                else:
+                    DisableBool = True  # disable if user is not logged in
+
                 # Like Button
                 if st.button(buttonLabel, key = button_key, use_container_width = True, disabled = DisableBool):
                     write_user_information(username = username,
