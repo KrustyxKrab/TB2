@@ -10,7 +10,7 @@ from utils.tools.card_index import card_index_generator
     What is needed to create a location: 
     
     title - name of the location
-    town - where is the location
+    address - where is the location
     
     description - more information about the location 
     
@@ -22,7 +22,7 @@ from utils.tools.card_index import card_index_generator
 
 """
 
-def create_location(title, town, desc, tags, image=None, address=None, author=None, id=None):
+def create_location(title, desc, tags, image=None, address=None, author=None, id=None):
     try:
         if "client" not in st.session_state:
             client = connect_to_mongo()
@@ -35,7 +35,6 @@ def create_location(title, town, desc, tags, image=None, address=None, author=No
 
         location_document = \
             {"title": title,
-             "town": town,
              "desc": desc,
              "tags": tags,
              "id": id,
@@ -180,7 +179,7 @@ def read_location(filter):
                     tags=[poi_tags.get(tag, f"Tag {tag}") for tag in tags],
                     image=location.get("image", None),
                     address=location.get("address", "No Address given"),
-                    additional_info={"Town": location.get("town", "Unknown Town"), "Author": location.get("author", "Unknown Author")}
+                    additional_info={"Author": location.get("author", "Unknown Author")}
                 )
                 print("after creation")
 
@@ -220,8 +219,7 @@ def admin_rights():
                 create_card(title = location.get("title", "Unknown Title"),
                     description = location.get("desc", ["No description available"]), id = location.get("id", "Unknown ID"),
                     tags = [poi_tags.get(tag, f"Tag {tag}") for tag in tags], image = location.get("image", None),
-                    additional_info = {"Town": location.get("town", "Unknown Town"),
-                                       "Author": location.get("author", "Unknown Author")},
+                    additional_info = {"Author": location.get("author", "Unknown Author")},
                     buttonLabel = "➖",
                     buttonText = "Delete"),
 

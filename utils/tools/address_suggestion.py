@@ -10,7 +10,7 @@ def get_address_suggestions(query):
         return []
 
     NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
-    params = {"q": query, "format": "json", "addressdetails": 1, "limit": 5}
+    params = {"q": query, "format": "json", "addressdetails": 1, "limit": 1}
     headers = {"User-Agent": "LocatoApp/1.0 (kruskyx24@gmail.com)"}
 
     try:

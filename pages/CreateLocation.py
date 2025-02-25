@@ -20,6 +20,9 @@ def suggest_tags(user_input, poi_tags):
 if "DisableButton" not in st.session_state or st.session_state["DisableButton"] is None:
     st.session_state["DisableButton"] = False
 
+if "selected_address" not in st.session_state:
+    st.session_state["selected_address"] = ""
+
 create_placeholder = st.container(border = True)
 after_creation = st.container(border = True)
 
@@ -32,7 +35,7 @@ with create_placeholder:
     st.markdown("#### 📸 Search for a picture")
     st.markdown("Upload or Search for a fitting image of the location")
 
-    image_upload = st.file_uploader(label="Image", type=['png', 'jpg', 'JPEG', 'heic'], accept_multiple_files=False)
+    image_upload = st.file_uploader(label="Image", type=['png', 'jpg', 'JPEG'], accept_multiple_files=False)
 
     img_data = None
     # code from streamlit.io
@@ -58,47 +61,6 @@ with create_placeholder:
         return [img["urls"]["regular"] for img in response.json().get("results", [])]
 
 
-    # ==================
-
-    # Streamlit UI
-    st.markdown("#### 📍 Address")
-    st.write("Type in and Press Enter to search fo Location.")
-
-    # Address Input with Autocomplete
-    query = st.text_input("Enter an Location or address", "")
-    search = st.button(label="Search for Address", type="secondary")
-    city = ""
-    # Fetch and display suggestions
-    if search:
-        results = get_address_suggestions(query)
-
-        if results:
-            # Find the selected result from the API response
-            selected_result = st.selectbox("Select an address:", results)
-
-            if selected_result:
-
-                # help of ChatGPT
-                # Extract the city from the address details
-                parts = [part.strip() for part in selected_result.split(",")]
-
-                for i, part in enumerate(parts):
-                    # Wenn eine Postleitzahl gefunden wird (5 Ziffern), nehmen wir die Stadt davor
-                    if part.strip().isdigit() and len(part.strip()) == 5 and i > 0:
-                       city = parts [i - 2]
-
-                #=======
-
-                # Display selected address and extracted city
-                st.success(f"Selected Address: {selected_result}")
-
-        else:
-            st.warning("No suggestions found. Try another address.")
-    else:
-        results = []
-
-    #==================
-
     if link:
         images = get_image(link, api_key, results = 1)
         if images:
@@ -106,13 +68,22 @@ with create_placeholder:
             st.image(img_data, caption = link.title(), use_container_width = True)
 
 
-    st.markdown("#### 📍 Town or City?")
-    st.markdown("Specify the city or town where your location is situated.")
-    if city != "":
-        st.text_input(label = "Enter town or city...", placeholder = f"{city}", disabled=True)
-        town = city
-    else:
-        town = st.text_input(label = "Enter town or city...")
+    # ==================
+
+    # Streamlit UI
+    st.markdown("#### 📍 Address")
+    query = st.text_input("Enter a location or address", "")
+    search = st.button("Search for Address", type = "secondary")
+
+    if search:
+        results = get_address_suggestions(query)
+        if results:
+            st.session_state["selected_address"] = results[0]
+            st.success(f"Selected Address: {st.session_state["selected_address"]}")
+
+        else:
+            st.warning("No suggestions found. Try another address.")
+
 
     st.markdown("#### ✏️ Short Description")
     st.markdown("Provide a **one-liner** about your location. This is the first impression!")
@@ -147,9 +118,9 @@ with create_placeholder:
         save = st.button(label = "Save Location", type = "primary", use_container_width = True)
 
         if save:
-            if title and town and tags and short_desc:
+            if title and st.session_state["selected_address"] and tags and short_desc:
                 unique_id = generate_unique_id(type = "location")
-                create_location(title, town, desc = [short_desc, desc], tags = tags,  image = img_data, address = selected_result, author = username, id = unique_id)
+                create_location(title, desc = [short_desc, desc], tags = tags,  image = img_data, address = st.session_state["selected_address"], author = username, id = unique_id)
 
                 with after_creation:
                     st.success("Location successfully created")
