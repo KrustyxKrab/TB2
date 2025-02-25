@@ -13,7 +13,8 @@ def get_address_suggestions(query):
     params = {"q": query, "format": "json", "addressdetails": 1, "limit": 5}
 
     # Headers (recommended for API usage)
-    headers = {"User-Agent": "Streamlit-Address-Lookup/1.0"}
+    headers = {"User-Agent": "LocatoApp/1.0 (kruskyx24@gmail.com)"
+    }
 
     try:
         response = requests.get(NOMINATIM_URL, params = params, headers = headers)
