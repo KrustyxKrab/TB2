@@ -1,14 +1,17 @@
 import streamlit as st
 from utils.server.CRUD_Users import write_user_information
 
-
-def create_card(title, description, id, tags, image=None, additional_info=None):
+def create_card(title, description, id, tags, image=None, address=None, additional_info=None, buttonLabel = "❤", buttonText= "Add to Favorites" ):
     """
     Creates a Streamlit card with an optional image, tags, and buttons.
     Includes a 'See More' expander for additional details.
     """
     from utils.tools.generate_id import generate_unique_id
     unique_id = generate_unique_id("random")
+
+    DisableBool = False
+
+    print("init creation of card")
 
     with st.container(border = True, key = f"card_{unique_id}"):
         if image:
@@ -25,41 +28,55 @@ def create_card(title, description, id, tags, image=None, additional_info=None):
         col1, col2 = st.columns(2)
 
         with col1:
-            st.markdown("**Add to Favorites**")
+            st.markdown(f"**{buttonText}**")
+            print(buttonLabel, buttonText)
 
         with col2:
             # Render buttons if available
-            label = "❤"
-            button_key = f"{unique_id}_{label}"
+            button_key = f"{unique_id}"
 
-            # Check if user data exists in session state
-            if st.session_state["user_data"]["username"] is not None:
-                #get username and author
-                username = st.session_state["user_data"]["username"]
-                author = additional_info.get("Author")
-                print(author, username)
-
-                DisableBool = username == author if username and author else False
+            if buttonText == "Delete":
+                print("deletion of location init")
+                if st.button(buttonLabel, key = button_key, use_container_width = True):
+                    print("delete location")
+                    from utils.server.CRUD_Location import deleteLocation
+                    deleteLocation("id", id)
+                    st.rerun()
 
             else:
-                DisableBool = True  # Disable the button when not logged in
+                # Check if user data exists in session state
+                if ("user_data" in st.session_state and
+                        st.session_state ["user_data"]["username"]  # Ensures username is not None or missing
+                ):
+                    #get username and author
+                    username = st.session_state ["user_data"] ["username"]
+                    author = additional_info.get("Author")
 
-            # Like Button
-            if st.button(label, key = button_key, use_container_width = True, disabled = DisableBool):
-                write_user_information(username = st.session_state["user_data"]["username"],
-                    type = "array", key = "Likes", value = id)
+                    print(author, username)
 
-        if DisableBool is True:
-            if username == author and username and author:
-                st.info("Can't Like own locations")
+                    DisableBool = username == author if username and author else False
 
-            else:
-                st.info("Log-In to Like")
+                else:
+                    DisableBool = True  # Disable the button when not logged in
+
+                print("before button creation")
+                # Like Button
+                if st.button(buttonLabel, key = button_key, use_container_width = True, disabled = DisableBool):
+                    write_user_information(username = username,
+                        type = "array", key = "Likes", value = id)
+
+            if DisableBool is True:
+                if username == author and username and author:
+                    st.info("Can't Like own locations")
+
+                else:
+                    st.info("Log-In to Like")
 
         with st.expander(f"Read More"):
             st.markdown(f"*{description[1]}*")
             if additional_info:
                 st.write("---")
+                st.write(address)
                 for key, value in additional_info.items():
                     st.write(f"**{key}:** {value}")
 

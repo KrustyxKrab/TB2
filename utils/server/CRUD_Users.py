@@ -30,14 +30,12 @@ def connect_to_mongo(retries=5, delay=2):
             # Save connection to session state
             save_session("client", client)
 
-            st.success("✅ Successfully connected to MongoDB!")
             return client
         except Exception as e:
             st.warning(f"⏳ Retry {attempt + 1}/{retries}: MongoDB not responding... {e}")
             time.sleep(delay * (2 ** attempt))  # Exponential backoff
 
-    # ❌ If all retries fail, use fallback
-    st.error("❌ MongoDB is down. Switching to fallback solution...")
+    st.error("MongoDB is down. Switching to fallback solution...")
 
     #alert_admin()
 
@@ -198,7 +196,8 @@ def update_user_field(username, key, value, update_type):
         if update_type == "set":
             update_operation = {"$set": {key: value}}  # Directly update a field
         elif update_type == "addToSet":
-            update_operation = {"$addToSet": {key: value}}  # Add value to array (if not already present)
+            update_operation = {"$addToSet": {key: value}}  # Add value to array
+
         #elif update_type == "push":
         #    update_operation = {"$push": {key: value}}  # Append value to array (even if duplicate)
         else:

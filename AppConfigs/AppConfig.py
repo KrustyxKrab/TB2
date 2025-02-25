@@ -54,6 +54,9 @@ after_login_pages_ADMIN = {
         st.Page("pages/UserLibrary.py", title="Your Account", icon="👤"),
         st.Page("pages/YourLocations.py", title="Your Locations", icon="💻"),
     ],
+    "Admin Area": [
+        st.Page("pages/AdminPanel.py", title="Admin Dashboard", icon="📝"),
+    ],
 
     "Project Information": [
         st.Page("pages/documentation.py", title="Documentation", icon="📃"),
