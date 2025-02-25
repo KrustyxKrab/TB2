@@ -66,9 +66,10 @@ with create_placeholder:
 
     # Address Input with Autocomplete
     query = st.text_input("Enter an Location or address", "")
+    search = st.button(label="Search for Address", type="secondary")
     city = ""
     # Fetch and display suggestions
-    if query:
+    if search:
         results = get_address_suggestions(query)
 
         if results:
