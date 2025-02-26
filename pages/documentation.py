@@ -234,13 +234,42 @@ st.code("""
 st.markdown("""
 - **Nominatim API (OpenStreetMap API)** → Implemented location search functionality
 
-#st.code("""""")
-
 ### **Challenges with Nominatim API:**  
 - The implementation was harder than expected.  
 - Incorrect usage caused **IP blocking issues**.  
 - Despite the difficulties, the API **significantly enhanced** the platform.  
 
+""")
+
+st.code("""
+    st.markdown('''
+    <style>
+        /* Forces Streamlit content to use full width */
+        [data-testid="stAppViewContainer"] {
+            max-width: 100vw;
+            padding: 0;
+        }
+
+        /* Expands the main content container */
+        [data-testid="stMainBlockContainer"] {
+            max-width: 100% !important;
+            padding-top: 1rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        /* Removes margins from main content */
+        [data-testid="stMain"] {
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            padding: 0;
+        }
+    </style>
+''', unsafe_allow_html=True)
+""")
+
+st.markdown("""
 ### **Admin Rights:**  
 - I enjoyed implementing **admin rights** into the app.  
 - I find it interesting and useful to have an **admin dashboard**.  
