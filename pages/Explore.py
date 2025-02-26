@@ -4,8 +4,10 @@ from utils.components.Sidebar import init_sidebar
 from utils.components.HeroSection import hero_section
 from utils.server.CRUD_Location import read_location
 
+# variable current_page set to explore (default for this page)
 current_page = 'Explore'
 
+# st.session_state
 if 'current_page' not in st.session_state:
     st.session_state['current_page'] = current_page
 
@@ -17,7 +19,7 @@ if 'logged_in' not in st.session_state:
 
 init_sidebar()
 
-
+# when user is logged in
 if current_page == "Explore" and st.session_state["logged_in"] is True:
     hero_section(
         "Let's Explore",
@@ -29,6 +31,7 @@ if current_page == "Explore" and st.session_state["logged_in"] is True:
         buttonOne = [{"label": "Create Location", "use": "switch_page", "link": "pages/CreateLocation.py", "type": "primary"}],
         buttonTwo = [{"label": "Get More Information", 'link': 'pages/Info.py', "use": "switch_page"}],)
 
+# when user is not logged in
 elif st.session_state['logged_in'] is False:
     hero_section("Let's Explore", """🌍 Discover Unique Places Around You!  
     Here, you can explore hidden gems, cozy cafes, and exciting spots recommended by others.  
@@ -36,14 +39,18 @@ elif st.session_state['logged_in'] is False:
     ✨ **Start exploring now and uncover the best spots near you!**""",
         "https://images.unsplash.com/photo-1716146410134-5e152c41827a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         buttonOne = [{"label": "Log-In to Create Location", "use": "switch_page", "link": "pages/Login.py", "type": "primary"}],)
+
+# should not occur but error handling
 else:
     print("Error")
     st.sidebar.write(st.error("Something went wrong! Please reload or try again!"))
 
+# Locations when logged in
 if "user_data" in st.session_state and st.session_state["user_data"] is not None:
     st.title("Locations for You")
     read_location("user")
 
+# all locations
 st.title("All Locations")
 read_location("all")
 
@@ -60,7 +67,7 @@ st.markdown("""
 </style>""",
             unsafe_allow_html=True)
 
-
+# css for wide layout
 st.markdown("""
     <style>
         /* Forces Streamlit content to use full width */
@@ -87,14 +94,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
-# === SEITEN-STEUERUNG ===
-
-# the logic which handles the current page across the multiple pages
-# if current_page == login, the login in page is being displayed
-# this is a workaround for the button state handler
-
-
+# switch page when button pressed
 if st.session_state["current_page"] == "CreateLocation":
     st.switch_page("pages/CreateLocation.py")
     st.rerun()

@@ -1,5 +1,7 @@
 import streamlit as st
 
+# info page - layouted with ChatGPT to beautiful markdown
+
 st.title("Information")
 
 st.markdown("""

@@ -4,9 +4,12 @@ from utils.server.CRUD_Location import read_location
 st.title("Your Locations")
 st.write("These are the Locations, you have created.")
 
+# read with different filter. here: author for own locations
 read_location("author")
 
 st.title("Your Liked Locations")
+
+# read with different filter. here: id for liked locations
 read_location("id")
 if read_location("id") == None:
     st.write("You have not Liked any Location yet")

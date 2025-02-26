@@ -5,6 +5,8 @@ from utils.components.HeroSection import hero_section
 query_params = st.query_params
 current_page = query_params.get("page", "main")
 
+# current page set to main
+# logic to display different hero sections
 if current_page == "main":
     if st.session_state['logged_in'] is False:
         st.session_state['current_page'] = "login"

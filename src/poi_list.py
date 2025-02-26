@@ -1,5 +1,8 @@
 "I've wrote this list with the help of ChatGPT"
 
+# all current tags of locations
+# I would implement an option for the user to add a tag / but not done yet
+
 poi_tags = {
     # 1️⃣ Food & Drink 🍽️🍹 (1-20)
     1: "Restaurant",

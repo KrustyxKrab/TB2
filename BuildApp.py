@@ -2,12 +2,10 @@ import streamlit as st
 from utils.components.Sidebar import init_sidebar
 from AppConfigs.AppConfig import pages, after_login_pages, after_login_pages_ADMIN
 
-
 st.set_page_config(
     page_title="Locato",
     page_icon="🧭"
 )
-
 
 with st.spinner("Getting the App ready"):
     init_sidebar()

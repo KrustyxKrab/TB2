@@ -8,7 +8,6 @@ introduced the app where I want to go inside this file (for example the informat
 without listing the file here before referring to it. 
 
 To make it work, all the pages, which I want to refer to, need to be visible in the st.navigation()
-
 """
 
 

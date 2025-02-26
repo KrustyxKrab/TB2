@@ -7,9 +7,10 @@ from utils.components.Sidebar import init_sidebar
 
 init_sidebar()
 
+#title
 st.title("Registration")
 
-# Found work around with st.session_state
+# st.session_state
 if "registered" not in st.session_state:
     st.session_state["registered"] = False
 
@@ -43,6 +44,7 @@ def register():
         submit_button = st.form_submit_button("Send")
 
         # Process the form submission
+        # logic proof the inputs
         if submit_button:
             if len(username) < 1 and len(password) < 1:
                 st.error("Type in username & password")
@@ -65,17 +67,15 @@ def register():
 
     return None
 
-
+#load the account setup function
 def load_customization():
     print("load custom")
 
+    # prevent errors
     if "user_data" in st.session_state and st.session_state["user_data"] is not None:
-        #st.write(f"user_data = {st.session_state['user_data']} (SUCCESS)")
         setup()
     else:
-        print("else triggered in load customization")
         st.write(f"user_data = {st.session_state.get('user_data', 'None')} (ERRORCODE register)")
-
 
 # main function
 username = register()

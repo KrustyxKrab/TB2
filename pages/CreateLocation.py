@@ -41,17 +41,15 @@ with create_placeholder:
     img_data = None
     # code from streamlit.io
     if image_upload is not None:
-        # Read the image file as binary
+        # .getvalue() - image to binary data
         image_binary = image_upload.getvalue()
 
         if image_binary:
             st.session_state["DisableButton"] = True
-            img_data = image_binary  # Assign binary data to img_data
+            img_data = image_binary
 
     link = st.text_input("Search for an image", disabled=st.session_state["DisableButton"])
-    # Replace with your Unsplash API key
     api_key = st.secrets['unsplash_api_key']
-
 
     # ChatGPT helped me with this code...
     def get_image(query, api_key, results=1):
@@ -69,7 +67,7 @@ with create_placeholder:
             st.image(img_data, caption = link.title(), use_container_width = True)
 
 
-    # ==================
+    # ========
 
     # Streamlit UI
     st.markdown("#### 📍 Address")

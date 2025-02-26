@@ -4,6 +4,7 @@ from utils.server.CRUD_Users import find_user
 from utils.components.Sidebar import init_sidebar
 from utils.tools.hash import verify_password
 
+#Login Page
 
 init_sidebar()
 
@@ -29,10 +30,10 @@ if "user_data" in st.session_state and st.session_state["user_data"] is not None
 
     # Ensure user_data exists before accessing it
     if "user_data" in st.session_state and st.session_state["user_data"] is not None:
-        username = st.session_state["user_data"].get("username")  # Use .get() to prevent KeyErrors
+        username = st.session_state["user_data"].get("username") # Used .get() which is more secure (debugged with ChatGPT)
 
         if username:
-            user_data = find_user("username", username, update=True)  # Force database update
+            user_data = find_user("username", username, update=True) # find user to find user_data
             st.sidebar.write(user_data)  # Show the fresh database data
         else:
             st.sidebar.error("Something went wrong: Username is missing.")
@@ -46,6 +47,8 @@ def login():
         st.sidebar.write("When this happens, please reload!")
         return None  # if the user is already logged in, just leave
 
+
+    # placeholder
     placeholder = st.empty()
 
     with placeholder.form("login_form"):
@@ -55,6 +58,7 @@ def login():
         submit_button = st.form_submit_button("Log In")
 
         if submit_button:
+            # spinner to offer the user some visual feedback
             with st.spinner('Wir prüfen deinen Account'):
                 try:
                     user_data = find_user("username", username)
@@ -62,7 +66,7 @@ def login():
                     if user_data and verify_password(password, user_data["password"]):
                         st.success("Login successful!")
 
-                        #usage of session_state -> safe the user progress for optimal UX
+                        # usage of session_state -> safe the user progress for optimal UX
                         # not safe the password in st.session_state
                         user_data.pop('password', None)
                         st.session_state["user_data"] = user_data
@@ -81,5 +85,5 @@ def login():
 
     return None
 
-
+# run the function
 login()
