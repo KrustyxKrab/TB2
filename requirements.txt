@@ -2,6 +2,7 @@ streamlit
 streamlit-extras
 pymongo
 bcrypt
+geopy
 
 #requests
 #string
