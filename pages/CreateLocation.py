@@ -78,7 +78,7 @@ with create_placeholder:
     if search:
         results = get_address_suggestions(query)
         if results:
-            st.session_state["selected_address"] = st.selectbox("Address", results, index = 0)
+            st.session_state["selected_address"] = st.selectbox("Address", results)
             st.success(f"Selected Address: {st.session_state["selected_address"]}")
 
         else:
