@@ -56,7 +56,66 @@ In the drafting process, I laid the foundation for achieving my goals (see **Att
 I applied my experience from past web design projects to keep scripts as simple as possible, making debugging and error-fixing easier.  
 
 ---
+
+My draft for the project structure:
+
+**Python**
 """)
+
+st.code("""
+    app.py
+    layout.py
+    pages
+    |- view_sights.py
+    |- add_sights.py
+    lib
+    |server
+    |---|- crud_operations.py
+    |---|- connect_db.py
+    tools
+    |---|- images.py # resize, scale etc.
+    |---|- hash.py # hash passwords and messages
+    |---|- rating_alg.py # algorithm for rating and suggesting sights
+    components
+    |---|- card.py
+    |---|- header.py
+    |---|- footer.py (?)
+        
+""")
+
+st.write("MongoDB Structure")
+st.code("""
+    Users
+    |UserData
+    |- password (hashed)
+    |- email
+    |- name
+    |- username
+    |- id
+    |- sights_commit
+    |- alg_str
+    Sights
+    |SightData
+    |- name
+    |- location
+    |- rating
+    |- image-link
+    |- id
+    |- comments
+    |- category
+    Chat
+    |UserChat_id#...
+    |---|- rooms
+    |---|- id
+    |---|- messages (hashed)
+""")
+
+st.write("drafting the string syntax for the algorithm")
+st.code("""
+    VC______IC______IL______CC______CL______ (in the gaps the numbers for categories)
+    
+    TCI______TLI_____ # Total string (median)
+    """)
 
 st.markdown("""
 ## 3. Minimal Functional Structure  
@@ -147,7 +206,22 @@ st.markdown("""
 ### **Nominatim API Issues:**  
 - During testing, **the app URL (locato.streamlit.app) was blocked** due to API request errors.  
 - I worked extensively on fixing this issue and **hope it won’t reoccur**.  
+""")
 
+st.code("""
+        # GeoLocater as written in docs of geopy
+    geolocator = Nominatim(user_agent="LocatoApp/1.0 (kruskyx24@gmail.com)", timeout=10)
+
+    try:
+        # try to get the address results with nominatim using geopy
+        location = geolocator.geocode(query, exactly_one=False, addressdetails=True, limit=1)
+        if location:
+            return [loc.address for loc in location]
+        return []
+
+""")
+
+st.markdown("""
 ### **Biggest Challenge Identified by Testers:**  
 - **User-generated content**: The app’s value depends on user participation.  
 - **Solution:**  
@@ -156,6 +230,7 @@ st.markdown("""
 
 ---
 """)
+
 
 st.markdown("""
 ## 7. Debugging and Iteration  
