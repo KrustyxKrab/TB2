@@ -77,12 +77,12 @@ with create_placeholder:
 
     if search:
         results = get_address_suggestions(query)
-    if results:
-        st.session_state["selected_address"] = results[0]
-        st.success(f"Selected Address: {st.session_state["selected_address"]}")
+        if results:
+            st.session_state["selected_address"] = st.selectbox(results, index = 0)
+            st.success(f"Selected Address: {st.session_state["selected_address"]}")
 
-    else:
-        st.warning("No suggestions found. Try another address.")
+        else:
+            st.warning("No suggestions found. Try another address.")
 
 
     st.markdown("#### ✏️ Short Description")
