@@ -127,7 +127,7 @@ Once the first simple design was complete, I set up the environment, including:
 
 st.write("Actual project structure")
 st.code("""
-    BuildApp.py
+    BuildApp.py # Entrypoint
     .streamlit
     |- config.toml
     |- secrets.toml
@@ -205,7 +205,36 @@ At this stage, I integrated various features, including those learned in class a
 
 ### **Key Features:**  
 - **Unsplash API** → Integrated image search  
-- **Nominatim API (OpenStreetMap API)** → Implemented location search functionality  
+
+""")
+
+st.code("""
+        link = st.text_input("Search for an image", disabled=st.session_state["DisableButton"])
+    # Replace with your Unsplash API key
+    api_key = st.secrets['unsplash_api_key']
+
+
+    # ChatGPT helped me with this code...
+    def get_image(query, api_key, results=1):
+        #Code from chatgpt to fetch image URLs based on a query.
+        search_url = "https://api.unsplash.com/search/photos"
+        response = requests.get(search_url,
+                                params = {"query": query.lower(), "client_id": api_key, "per_page": results})
+        return [img["urls"]["regular"] for img in response.json().get("results", [])]
+
+
+    if link:
+        images = get_image(link, api_key, results = 1)
+        if images:
+            img_data = images[0]
+            st.image(img_data, caption = link.title(), use_container_width = True)
+
+""")
+
+st.markdown("""
+- **Nominatim API (OpenStreetMap API)** → Implemented location search functionality
+
+#st.code("""""")
 
 ### **Challenges with Nominatim API:**  
 - The implementation was harder than expected.  
