@@ -112,7 +112,7 @@ st.code("""
 
 st.write("drafting the string syntax for the algorithm")
 st.code("""
-    VC______IC______IL______CC______CL______ (in the gaps the numbers for categories)
+    VC______IC______IL______CC______CL______ #in the gaps the numbers for categories
     
     TCI______TLI_____ # Total string (median)
     """)
@@ -122,8 +122,49 @@ st.markdown("""
 
 Once the first simple design was complete, I set up the environment, including:  
 - Folder structure  
-- GitHub repository  
+- GitHub repository
+""")
 
+st.write("Actual project structure")
+st.code("""
+    BuildApp.py
+    .streamlit
+    |- config.toml
+    |- secrets.toml
+    AppConfig
+    |- AppConfig.py
+    pages
+    |- AdminPanel.py
+    |- documentation.py
+    |- Explore.py
+    |- Info.py
+    |- Login.py
+    |- main.py
+    |- Register.py
+    |- UserLibrary.py
+    |- YourLocations.py
+    src
+    |- AppConfig.py
+    |- poi_list.py
+    utils
+    |- components
+    |---|- AccountSetup.py
+    |---|- HeroSection.py
+    |---|- LocatoCard.py
+    |---|- Sidebar.py
+    |- server
+    |---|- alert_admin.py # not in use
+    |---|- CRUD_Location.py
+    |---|- CRUD_Users.py
+    |---|- SessionState.py # obsolete
+    |- tools
+    |---|- address_suggestion.py
+    |---|- card_index.py
+    |---|- generate_id.py
+    |---|- hash.py
+""")
+
+st.markdown("""
 ### **Key Challenges:**  
 One of the main challenges I faced was **Streamlit’s navigation system**. Initially, I added a `pages/` folder in the structure but later discovered that Streamlit provides a built-in navigation system for this.  
 
@@ -137,6 +178,7 @@ This technique led to the next challenge.
 
 ---
 """)
+
 
 st.markdown("""
 ## 4. Design  
