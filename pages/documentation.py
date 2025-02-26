@@ -3,8 +3,8 @@ import streamlit as st
 st.markdown("""
 # Project Documentation
 
-# Locato App  
-## Tech Basics II Project  
+## Locato App  
+### Tech Basics II Project  
 
 ---
 
