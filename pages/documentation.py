@@ -117,6 +117,8 @@ st.code("""
     TCI______TLI_____ # Total string (median)
     """)
 
+st.write("The drafts were only drafts and the code differs in the end. For example: the algorithm strings are not used")
+
 st.markdown("""
 ## 3. Minimal Functional Structure  
 
