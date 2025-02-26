@@ -3,35 +3,26 @@ import bcrypt
 
 def password_hash(password):
     """
-    Hashes a password using bcrypt.
-    Args:
-        password (str): The password to hash.
-    Returns:
-        bytes: The hashed password.
+    Password hash encrypts the password using bcrypt
     """
-    # Generate a salt with specified rounds
+    # Salt - random value "added" to the string
     salt = bcrypt.gensalt(rounds=15)
 
-    # Hash the password (must encode to bytes)
+    # converting the password to utf-8 and hashes the password
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
     return hashed_password
 
 
 def verify_password(password, hashed_password):
     """
-    Verifies a password against its hashed value.
-    Args:
-        password (str): The plaintext password to check.
-        hashed_password (bytes or str): The hashed password to compare against.
-    Returns:
-        bool: True if the password matches the hash, False otherwise.
+    decrypts the password and combines it with the given password
     """
-    # If the hashed password is a string, encode it to bytes
+    # hased_password is stored as string in mongodb - deconverting
     if isinstance(hashed_password, str):
         hashed_password = hashed_password.encode('utf-8')
 
-    # Encode the input password to bytes
+    # encodes the new input password to utf-8
     password_utf = password.encode('utf-8')
 
-    # Check the password and return the result
+    # checks the password using bcrypt
     return bcrypt.checkpw(password_utf, hashed_password)

@@ -11,6 +11,7 @@ st.write("We are happy, you are contributing to our community 🎉")
 
 def suggest_tags(user_input, poi_tags):
     """Suggests tags based on user input by filtering matching tag names."""
+    # external code (source in project documentation)
     user_input = user_input.lower().strip()
     suggestions = {k: v for k, v in poi_tags.items() if user_input in v.lower()}
 
