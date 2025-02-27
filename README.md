@@ -61,6 +61,3 @@ This command will launch the Streamlit app in your default web browser.
 
 Acknowledgments
 	•	Streamlit for providing an intuitive framework for web applications.
-	•	[Include any other acknowledgments or references here].
-
-Note: Replace placeholders (e.g., project purpose, acknowledgments) with specific information related to your project.
