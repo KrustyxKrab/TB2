@@ -2,7 +2,7 @@
 
 ### Overview
 
-The Tech Basics 2 Project is a Python-based application designed to [provide a brief description of the project’s purpose and functionality]. This project utilizes the Streamlit framework for creating an interactive web interface.
+The Tech Basics 2 Project is a Python-based application designed meant to be a Social Media for Real World Locations. This project utilizes the Streamlit framework for creating an interactive web interface.
 
 ### Features
 	•	Interactive Web Interface: Built with Streamlit to provide a user-friendly experience.
@@ -34,7 +34,7 @@ pip install -r requirements.txt
 
 To run the application:
 
-streamlit run BuildApp.py
+		streamlit run BuildApp.py
 
 This command will launch the Streamlit app in your default web browser.
 
