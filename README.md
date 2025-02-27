@@ -34,7 +34,7 @@ pip install -r requirements.txt
 
 To run the application:
 
-		streamlit run BuildApp.py
+	streamlit run BuildApp.py
 
 This command will launch the Streamlit app in your default web browser.
 
