@@ -3,12 +3,13 @@ from utils.server.CRUD_Users import write_user_information
 
 def create_card(title, description, id, tags, image=None, address=None, additional_info=None, buttonLabel = "❤", buttonText= "Add to Favorites" ):
     """
-    Creates a Streamlit card with an optional image, tags, and buttons.
-    Includes a 'See More' expander for additional details.
+    A Streamlit Card using container to have all the location information in it
+    Builds a 'See More' expander for more information
     """
     from utils.tools.generate_id import generate_unique_id
     unique_id = generate_unique_id("random")
 
+    # init variable
     DisableBool = False
 
     print("init creation of card")
@@ -55,6 +56,7 @@ def create_card(title, description, id, tags, image=None, address=None, addition
                 # if author in additional_info
                 author = additional_info.get("Author") if additional_info else None
 
+                # dis- and enabling the button to like the location
                 # handle username & author
                 if username and author:
                     DisableBool = username == author  # disable if the user is the author

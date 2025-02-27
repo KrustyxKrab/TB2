@@ -1,5 +1,6 @@
-import streamlit as st
+#this code is not active - maybe in upcoming dev stages (for debugging reasons so I know when something does not work)
 
+#import streamlit as st
 #def alert_admin():
 
     #recipients = st.secrets['admin_mail']

@@ -9,14 +9,14 @@ def pills(label, b, e):
         ### Please select some categories your interested in
         st.markdown(f"{label}")
 
+        #st.pills is quite a new feature
         tag = st.pills("Locato Locations", options = [key for key in range(b, e)],  # Use keys for internal values
-                          selection_mode = "multi", format_func = lambda tag: poi_tags[tag]  # Map key → value for display
+                          selection_mode = "multi", format_func = lambda tag: poi_tags[tag]  # Map key - value for display
                           )
         st.markdown(f"You've selected option: {tag}")
         return tag
 
 def setup():
-
 
     st.write("Setup your Locato Account")
 
@@ -74,7 +74,7 @@ def setup():
                         st.success(f"Settings updated! Your main town is set to: {town}")
 
                         time.sleep(5)
-                        #usage of st.session_state with current_page as variable and set it to account management -> this leads the user backt o the managment page
+                        #usage of st.session_state with current_page as variable and set it to account management -> this leads the user back to the managment page
 
                         st.session_state["current_page"] = "account_management"
 
@@ -85,7 +85,7 @@ def setup():
             else:
                 st.error("Please provide a town name!")
         if cancel_button:
-            st.session_state ["current_page"] = "account_management"
+            st.session_state["current_page"] = "account_management"
             # rerun reloads the page and sets it to current_page
             st.rerun()
 

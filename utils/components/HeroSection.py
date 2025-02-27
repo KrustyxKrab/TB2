@@ -1,7 +1,6 @@
 import streamlit as st
 
-from streamlit_extras.switch_page_button import switch_page
-from AppConfigs.AppConfig import pages
+# created a hero section that gave me more design consistency and ease
 
 def hero_section(title, description, image=None, buttonOne=None, buttonTwo=None):
     col1, col2 = st.columns(2)
@@ -55,20 +54,3 @@ def hero_section(title, description, image=None, buttonOne=None, buttonTwo=None)
     with col2:
         if image:
             st.image(image, use_container_width=True)
-
-        #if "image_index" not in st.session_state:
-        #    st.session_state ["image_index"] = 0  # Start bei erstem Bild
-
-        #def next_image():
-        #    """Wechselt zum nächsten Bild in der Sequenz"""
-        #    st.session_state ["image_index"] = (st.session_state ["image_index"] + 1) % len(imageseq)
-        #    st.rerun()  # Erzwingt ein Neuladen der Seite mit dem neuen Bild
-
-        #if imageseq:
-        #    # Aktuelles Bild anzeigen
-        #    st.image(imageseq [st.session_state ["image_index"]], use_container_width=True)
-
-            # Nach 15 Sekunden das Bild wechseln
-        #    time.sleep(15)
-        #    next_image()
-

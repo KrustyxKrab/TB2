@@ -10,15 +10,15 @@ from utils.tools.card_index import card_index_generator
     What is needed to create a location: 
     
     title - name of the location
-    address - where is the location
+    address - where is the location !!!!
     
     description - more information about the location 
     
     tags - what is the location (some tags of the poi_tag list)
     
-    rating 
+    rating ? / Like button
     
-    comments
+    comments ?
 
 """
 
@@ -30,9 +30,11 @@ def create_location(title, desc, tags, image=None, address=None, author=None, id
             # if the MongoDB connection is already built
             client = st.session_state['client']
 
+        # db definition
         db = client['LocatoApp']
         collection = db['locations']
 
+        # document of new location
         location_document = \
             {"title": title,
              "desc": desc,
@@ -41,14 +43,14 @@ def create_location(title, desc, tags, image=None, address=None, author=None, id
              "image": image,
              "address": address,
              "author": author,
-             "rating": 0,
-             "comments": None,
+             "rating": 0, # space for further development
+             "comments": None, # space for further development
              }
 
         if collection.insert_one(location_document):
             # stores the document in the session state
             st.write(f"Location Data = {location_document}")
-            print(f"Location inserted by {author}")
+            #print(f"Location inserted by {author}")
 
 
         else:
@@ -66,15 +68,15 @@ def find_location(key, value):
         db = client["LocatoApp"]
         collection = db["location"]
 
-        # Fetch user from database
+        # fetch information from db
         location = collection.find_one({key: value})
 
         # Update session state with fresh data
         if location:
-            print(f"Location found in DB with {key}: {value}")
+            #print(f"Location found in DB with {key}: {value}")
             return location
         else:
-            print(f"No location found with {key}: {value}")
+            #print(f"No location found with {key}: {value}")
             return None
 
     except Exception as e:
@@ -92,22 +94,18 @@ def read_location(filter):
         db = client["LocatoApp"]
         collection = db["locations"]
 
-        print("initialized read")
-
         if filter == "author":
             # gets user_data tags
+            # and defines the query for the author, which is the username
             if "user_data" in st.session_state and st.session_state['user_data'] is not None:
                 username = st.session_state['user_data']['username']
                 query = {"author": username}
 
-                print("filter author")
-
+        # user filter shows the location which should fit to the user preferences
         elif filter == "user":
             # gets user_data tags
             if "user_data" in st.session_state and st.session_state['user_data'] is not None:
                 user_tags = st.session_state['user_data']['tags']
-
-                print("filter user part one")
 
                 # if user_tags is only one number and not a list
                 if isinstance(user_tags, int):
@@ -115,14 +113,13 @@ def read_location(filter):
 
             else:
                 user_tags = []
-                print("if no user information are stored")
 
             # if only a few tags are stored for the user
             if len(user_tags) < 3:
-                query = {}  # Show all locations if no user tags exist
+                query = {}  # Show all locations if no user_tags exist
                 st.write("Please configure you account for best fitting results.")
             else:
-                query = {"tags": {"$in": user_tags}}
+                query = {"tags": {"$in": user_tags}} # ChatGPT helped here
 
         elif filter == "id":
             likes = []  # Default empty list
@@ -144,11 +141,12 @@ def read_location(filter):
 
         elif filter == "all":
             print("filter all")
-            query = {}  # Show all locations if no user tags exist
+            query = {}  # Show all locations if no user_tags exist
 
         else:
             st.error("Something went wrong... please reload")
 
+        # query should never be None
         if query is not None:
             print("query not None")
             # fetches the data from mongo
@@ -160,6 +158,7 @@ def read_location(filter):
         columns = st.columns(4)
         card_index = card_index_generator()
 
+        # all findings - iterate through the list
         # use of create_Card to display location
         for location in locations:
             tags = location.get("tags", [])
@@ -169,7 +168,7 @@ def read_location(filter):
                 tags = [tags]
 
             col_index = next(card_index)
-            with columns [col_index]:
+            with columns[col_index]:
 
                 print("Create Card")
                 create_card(
@@ -222,6 +221,7 @@ def admin_rights():
                     additional_info = {"Author": location.get("author", "Unknown Author")},
                     buttonLabel = "➖",
                     buttonText = "Delete"),
+                # delete feature
 
     except Exception as e:
         st.error(f"⚠️ Error with admin operation: {e}")
@@ -241,7 +241,7 @@ def deleteLocation(key, value):
         db = client["LocatoApp"]
         collection = db["locations"]
 
-        collection.delete_one({f"{key}": f"{value}"})
+        collection.delete_one({f"{key}": f"{value}"}) # deletes one location
 
     except Exception as e:
         st.error(f"⚠️ Error deleting location: {e}")

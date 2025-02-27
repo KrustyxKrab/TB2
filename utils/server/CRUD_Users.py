@@ -8,30 +8,29 @@ from utils.server.SessionState import save_session
 import time
 
 # ==== GENERAL CONNECTION FUNCTION ====
-
-
 def connect_to_mongo(retries=5, delay=2):
     """
     Connect to MongoDB with automatic retries and a fallback mechanism.
     """
     # Import credentials from Streamlit secrets
-    user = st.secrets ['username']
-    db_password = st.secrets ['password']
+    user = st.secrets['username']
+    db_password = st.secrets['password']
 
     # MongoDB connection URI
     uri = f"mongodb+srv://{user}:{db_password}@locato.8njtn.mongodb.net/?retryWrites=true&w=majority&appName=Locato"
 
-    # Attempt to connect with retries
+    # Attempt to connect with retries / debugging if mongodb is slow or down
     for attempt in range(retries):
         try:
             client = MongoClient(uri, server_api = ServerApi('1'))
-            client.admin.command('ping')  # Check if MongoDB is alive
+            client.admin.command('ping') # pings (mongodb suggests to use this)
 
             # Save connection to session state
             save_session("client", client)
 
             return client
         except Exception as e:
+            # ChatGPT helped here - had issues with mongo and found a way to handel it with chatgpt
             st.warning(f"⏳ Retry {attempt + 1}/{retries}: MongoDB not responding... {e}")
             time.sleep(delay * (2 ** attempt))  # Exponential backoff
 
@@ -48,7 +47,7 @@ def fallback_solution():
     1. Try reading from a read-only secondary MongoDB node.
     """
     try:
-        # Attempt to connect to a secondary node (read-only)
+        # Attempt to connect to a secondary user (backup user)
         secondary_uri = f"mongodb+srv://{st.secrets ['backup_user']}:{st.secrets ['backup_password']}@locato.8njtn.mongodb.net/?retryWrites=true&w=majority&appName=Locato"
         secondary_client = MongoClient(secondary_uri, server_api = ServerApi('1'))
         secondary_client.admin.command('ping')  # Test connection
@@ -86,7 +85,7 @@ def create_user(name, username, email, password, id):  #create
         }
 
         if collection.insert_one(user_document):
-            # stores the document in the session state
+            # stores the document in session state
             st.session_state["user_data"] = user_document
             user_data = st.session_state["user_data"]
             st.write(f"User Data = {user_data} (ERRORCODE create_user)")
@@ -101,14 +100,9 @@ def create_user(name, username, email, password, id):  #create
 
 # ==== FIND USER AND UPDATE STATE ====
 def find_user(key, value, update=False):
-    """
-    Fetch user data from the database.
-    If `update=True`, it forces a new database fetch.
-    Otherwise, it returns the session state value if available.
-    """
 
     if not update and "user_data" in st.session_state and st.session_state["user_data"]:
-        return st.session_state["user_data"]  # Use cached session data if update is False
+        return st.session_state["user_data"]  # if user_data already in the session state
 
     try:
         # Ensure MongoDB connection
@@ -139,24 +133,24 @@ def find_user(key, value, update=False):
 # ==== WRITE INFORMATION TO USER ====
 def write_user_information(username, type, key, value):  # write/ update
     try:
-        # Verbindung zu MongoDB herstellen
+        # Connection to mongodb
         client = st.session_state['client']
         user_data = st.session_state['user_data']
 
-        # database
+        # database information
         db = client['LocatoApp']
         collection = db['users']
 
-        # Log the username and key-value being updated
+        # Log the username and key-value being updated / debugging
         print(f"Updating user: {username}, key: {key}, value: {value}")
 
         # searches the user with the username
         if not user_data:
             # security (if no user is found - should not be possible)
-            print(f"No user found in session state for username: {username}")
+            #print(f"No user found in session state for username: {username}")
             return
 
-        # value is added to key
+        # value is added to key / code snippets from sources (in the docs)
         if type == "array":
             result = collection.update_one(
                 {"username": username},  # Filter
@@ -171,7 +165,7 @@ def write_user_information(username, type, key, value):  # write/ update
             print("Error - please enter a valid type")
             return
 
-        # Log the result of the database update
+        # Log the result of the database update / debugging
         print(f"Update result: {result.modified_count} document(s) modified.")
 
     except Exception as e:
@@ -180,7 +174,7 @@ def write_user_information(username, type, key, value):  # write/ update
 # ==== UPDATE USER INFORMATION ====
 def update_user_field(username, key, value, update_type):
     try:
-        # Ensure MongoDB connection
+        # Connection to mongodb
         if "client" not in st.session_state:
             client = connect_to_mongo()
         else:
@@ -192,22 +186,20 @@ def update_user_field(username, key, value, update_type):
         # Log the update operation
         print(f"Updating user: {username}, key: {key}, value: {value}, update_type: {update_type}")
 
-        # Define update operation based on update_type
+        # Define update operation based on update_type / ChatGPT helped
         if update_type == "set":
-            update_operation = {"$set": {key: value}}  # Directly update a field
+            update_operation = {"$set": {key: value}}  # update
         elif update_type == "addToSet":
-            update_operation = {"$addToSet": {key: value}}  # Add value to array
+            update_operation = {"$addToSet": {key: value}}  # add
 
-        #elif update_type == "push":
-        #    update_operation = {"$push": {key: value}}  # Append value to array (even if duplicate)
         else:
             print("Error - Invalid update type! Use 'set', 'addToSet', or 'push'.")
             return
 
-        # Perform the update operation
+        # update
         result = collection.update_one({"username": username}, update_operation)
 
-        # Log the result
+        # debugging
         if result.modified_count > 0:
             print(f"Successfully updated user {username}: {key} -> {value}")
         else:
