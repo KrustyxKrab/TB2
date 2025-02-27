@@ -5,12 +5,14 @@ from utils.server.CRUD_Users import find_user
 from utils.components.AccountSetup import setup
 from utils.server.SessionState import save_session
 
-st.title('Your Locato Locations')
+st.title('Your Locato Account')
 
 st.write(f"Welcome, {st.session_state ['user_data'] ['username']}!")
 
 if st.session_state ['user_data'] ['admin'] is True:
-    st.write('You are an admin of Locato - Congratulations')
+    st.markdown('You are an admin of **Locato** - Congratulations')
+
+st.markdown('Feel free to change your personal data like name, username or email address. At the moment, you cannot change your password. This feature will come soon.')
 
 # ========== CHANGE DATA SECTION =========
 
@@ -60,7 +62,9 @@ else:
 
         with colB:
             cancel = st.button(label = "Cancel", type = "secondary", use_container_width = True)
-
+            if cancel:
+                st.session_state["edit_mode"] = False
+                st.rerun()
         # when the button is pressed, validate the input and send it to mongo
         if save:
             if len(new_name) < 1:
